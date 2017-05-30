@@ -1,0 +1,10 @@
+.right-panel {
+  display: none;
+  width: 50%;
+  border-left: solid 1px #e3e3e3;
+  padding: 20px;
+}
+
+.right-panel.show {
+  display: block;
+}

@@ -1,0 +1,1 @@
+Run client and server using the start script separately.
