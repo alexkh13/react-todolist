@@ -6,6 +6,8 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "json-fs-store": "^1.0.1",
+    "shortid": "^2.2.8",
     "underscore": "^1.8.3"
   },
   "scripts": {
