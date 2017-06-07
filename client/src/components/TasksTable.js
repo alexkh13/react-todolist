@@ -23,20 +23,20 @@ class TasksTable extends Component {
                 <TableHeader>
                     <TableRow>
                         <TableHeaderColumn>Description</TableHeaderColumn>
-                        <TableHeaderColumn>Status</TableHeaderColumn>
-                        <TableHeaderColumn>Type</TableHeaderColumn>
-                        <TableHeaderColumn>Owner</TableHeaderColumn>
-                        <TableHeaderColumn>Assignee</TableHeaderColumn>
+                        <TableHeaderColumn width="10%">Status</TableHeaderColumn>
+                        <TableHeaderColumn width="10%">Type</TableHeaderColumn>
+                        <TableHeaderColumn width="15%">Owner</TableHeaderColumn>
+                        <TableHeaderColumn width="15%">Assignee</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody deselectOnClickaway={false}>
                     {this.state.tasks.map(task =>
                         <TableRow key={task.id} selected={this.state.selected[task.id]}>
                             <TableRowColumn>{task.description}</TableRowColumn>
-                            <TableRowColumn>{task.status}</TableRowColumn>
-                            <TableRowColumn>{task.type}</TableRowColumn>
-                            <TableRowColumn>{task.owner}</TableRowColumn>
-                            <TableRowColumn>{task.assignee}</TableRowColumn>
+                            <TableRowColumn width="10%">{task.status}</TableRowColumn>
+                            <TableRowColumn width="10%">{task.type}</TableRowColumn>
+                            <TableRowColumn width="15%">{task.owner}</TableRowColumn>
+                            <TableRowColumn width="15%">{task.assignee}</TableRowColumn>
                         </TableRow>
                     )}
                 </TableBody>
