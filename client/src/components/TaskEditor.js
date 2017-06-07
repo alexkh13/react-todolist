@@ -16,8 +16,8 @@ class TaskEditor extends Component {
 
     static instances = [];
 
-    statuses = [ "Open", "In Progress", "Closed" ];
-    types = [ "Bug", "Feature" ];
+    statuses = [ "Open", "In Progress", "Fixed", "Reproduce", "Closed" ];
+    types = [ "Bug", "Feature", "Suggestion" ];
 
     componentDidMount() {
         this.onPasteBind = this.onPaste.bind(this);
