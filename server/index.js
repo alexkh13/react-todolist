@@ -1,4 +1,5 @@
 const _ = require('underscore');
+const path = require('path');
 const shortid = require('shortid');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -99,5 +100,7 @@ app.delete('/tasks/:taskId/images/:index', (req, res) => {
         });
     });
 });
+
+app.use('/', express.static(path.resolve(__dirname, '../client/build')));
 
 app.listen(3001);
