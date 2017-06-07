@@ -22,15 +22,21 @@ class TasksTable extends Component {
             <Table onRowSelection={this.taskSelect}>
                 <TableHeader>
                     <TableRow>
-                        <TableHeaderColumn>Name</TableHeaderColumn>
+                        <TableHeaderColumn>Description</TableHeaderColumn>
                         <TableHeaderColumn>Status</TableHeaderColumn>
+                        <TableHeaderColumn>Type</TableHeaderColumn>
+                        <TableHeaderColumn>Owner</TableHeaderColumn>
+                        <TableHeaderColumn>Assignee</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody deselectOnClickaway={false}>
                     {this.state.tasks.map(task =>
                         <TableRow key={task.id} selected={this.state.selected[task.id]}>
-                            <TableRowColumn>{task.name}</TableRowColumn>
+                            <TableRowColumn>{task.description}</TableRowColumn>
                             <TableRowColumn>{task.status}</TableRowColumn>
+                            <TableRowColumn>{task.type}</TableRowColumn>
+                            <TableRowColumn>{task.owner}</TableRowColumn>
+                            <TableRowColumn>{task.assignee}</TableRowColumn>
                         </TableRow>
                     )}
                 </TableBody>

@@ -11,13 +11,13 @@ import ImageViewer from "./Image";
 class TaskEditor extends Component {
 
     state = {
-        images: [],
         task: null
     };
 
     static instances = [];
 
-    statuses = [ "Open", "Closed" ];
+    statuses = [ "Open", "In Progress", "Closed" ];
+    types = [ "Bug", "Feature" ];
 
     componentDidMount() {
         this.onPasteBind = this.onPaste.bind(this);
@@ -41,8 +41,8 @@ class TaskEditor extends Component {
                 let reader = new FileReader();
                 reader.onload = (event) => {
                     this.setState({
-                        images: update(this.state.images || [], {
-                            $push: [event.target.result]
+                        task: update(this.state.task, { images:
+                            { $set: update(this.state.task.images, { $push: [event.target.result] }) }
                         })
                     });
                     fetch(`/tasks/${this.state.task.id}/images`, {
@@ -62,21 +62,33 @@ class TaskEditor extends Component {
         return (
             <div>{ this.state.task &&
                 <div style={{display:'flex',flexDirection:'column'}}>
-                    <TextField name="name" value={this.state.task.name} onChange={this.onChange}
-                    floatingLabelText="Name"
-                    />
+                    <TextField name="description" value={this.state.task.description} multiLine={true} onChange={this.onChange}
+                        floatingLabelText="Description" fullWidth={true}/>
                     <SelectField name="status"
-                    floatingLabelText="Status"
-                    value={this.state.task.status}
-                    onChange={(event, index) => this.updateAttribute("status", this.statuses[index]) }
-                    >{ this.statuses.map(status =>
-                        <MenuItem key={status} value={status} primaryText={status}/>
-                    )}
+                                floatingLabelText="Status"
+                                value={this.state.task.status}
+                                onChange={(event, index) => this.updateAttribute("status", this.statuses[index]) }>{
+                                    this.statuses.map(status =>
+                                        <MenuItem key={status} value={status} primaryText={status}/>
+                                )}
                     </SelectField>
+                    <SelectField name="type"
+                                 floatingLabelText="Type"
+                                 value={this.state.task.type}
+                                 onChange={(event, index) => this.updateAttribute("type", this.types[index]) }>{
+                                     this.types.map(type =>
+                                        <MenuItem key={type} value={type} primaryText={type}/>
+                                )}
+                    </SelectField>
+                    <TextField name="owner" value={this.state.task.owner} onChange={this.onChange}
+                               floatingLabelText="Owner"/>
+                    <TextField name="assignee" value={this.state.task.assignee} onChange={this.onChange}
+                               floatingLabelText="Assignee"/>
+
 
                     { this.state.task.id && (<div>
                         <h3>Images</h3>
-                        {(this.state.images||[]).map((image,index) => (
+                        {(this.state.task.images||[]).map((image,index) => (
                             <Paper zDepth={1} key={index} style={{position:'relative',display:'inline-block',margin:'10px'}}>
                                 <ImageViewer data={image} />
                                 <FloatingActionButton onTouchTap={()=>this.removeImage(index)} mini={true} secondary={true} style={{position:'absolute',top:-10,right:-10}}>
@@ -84,7 +96,7 @@ class TaskEditor extends Component {
                                 </FloatingActionButton>
                             </Paper>)
                         )}
-                        {(!this.state.images||!this.state.images.length)&& (
+                        {(!this.state.task.images||!this.state.task.images.length)&& (
                             <div>
                                 <div>No Images</div>
                             </div>
@@ -100,7 +112,9 @@ class TaskEditor extends Component {
             method: 'DELETE'
         }).then(() => {
             this.setState({
-                images: update(this.state.images, { $splice: [[index,1]]})
+                task: update(this.state.task, { images:
+                    { $set: update(this.state.task.images, { $splice: [[index,1]]}) }
+                })
             })
         });
     };
@@ -123,15 +137,6 @@ class TaskEditor extends Component {
         this.setState({
             task: props.task
         });
-        if (props.task) {
-            fetch(`/tasks/${props.task.id}/images`)
-                .then(res => res.json())
-                .then(images => {
-                    this.setState({
-                        images: images
-                    })
-                })
-        }
     }
 
 }

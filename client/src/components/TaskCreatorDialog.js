@@ -61,7 +61,10 @@ class TaskCreatorDialog extends Component {
                 this.setState({
                     task: {
                         name: "",
-                        status: "Open"
+                        status: "Open",
+                        type: "Bug",
+                        owner: "",
+                        assignee: ""
                     }
                 });
             }

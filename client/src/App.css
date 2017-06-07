@@ -8,3 +8,7 @@
 .right-panel.show {
   display: block;
 }
+
+.top-icons svg{
+  color: white !important;
+}

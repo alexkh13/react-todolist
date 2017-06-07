@@ -6,8 +6,10 @@ import ClassNames from 'classnames';
 import debounce from 'javascript-debounce';
 
 import AppBar from 'material-ui/AppBar';
+
 import IconButton from 'material-ui/IconButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 import TasksTable from './components/TasksTable';
 import TaskEditor from './components/TaskEditor';
@@ -24,9 +26,13 @@ class App extends React.Component {
     };
 
     render() {
+
         return (
             <View style={{display:'flex'}} className="fill">
-                <AppBar title="Tasks" iconElementRight={ <IconButton onTouchTap={this.openCreateTask}><ContentAdd/></IconButton> } />
+                <AppBar title="Tasks" iconElementRight={ <div className="top-icons">
+                    <IconButton onTouchTap={this.openCreateTask}><ContentAdd/></IconButton>
+                    { this.state.selectedTask && <IconButton onTouchTap={this.deleteSelectedTasks}><ActionDelete/></IconButton> }
+                </div> } />
                 <View style={{flex:1,flexDirection:'row'}} className="fill scroll">
                     <TasksTable style={{flex:1}} tasks={this.state.tasks} selectedTask={this.state.selectedTask} onTaskSelect={this.onTaskSelect}></TasksTable>
                     <View className={ClassNames("right-panel", {"show":!!this.state.selectedTask})}>
@@ -40,6 +46,17 @@ class App extends React.Component {
 
   openCreateTask = () => {
       this.setState({createTaskOpen: true});
+  };
+
+  deleteSelectedTasks = () => {
+      let taskIndex = this.state.tasks.indexOf(this.state.selectedTask);
+      fetch('/tasks/' + this.state.selectedTask.id, {
+          method: 'DELETE'
+      })
+          .then(task => this.setState({
+              selectedTask: null,
+              tasks: update(this.state.tasks, { $splice: [[taskIndex, 1]]})
+          }));
   };
 
   onTaskCreateClose = (task) => {
