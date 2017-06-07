@@ -42,7 +42,7 @@ class TaskEditor extends Component {
                 reader.onload = (event) => {
                     this.setState({
                         task: update(this.state.task, { images:
-                            { $set: update(this.state.task.images, { $push: [event.target.result] }) }
+                            { $set: update(this.state.task.images || [], { $push: [event.target.result] }) }
                         })
                     });
                     fetch(`/tasks/${this.state.task.id}/images`, {
